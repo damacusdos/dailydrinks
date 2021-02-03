@@ -1,28 +1,26 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <Orderlist />
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Orderlist from './components/orderlist.vue'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    Orderlist
   }
 }
 </script>
 
 <style>
+html {
+  background-color: rgba(232, 229, 218, .3);
+}
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  color: rgb(99, 90, 52);
 }
 </style>
