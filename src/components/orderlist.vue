@@ -2,7 +2,7 @@
 <div>
   <div class="title">Order A Drink</div>
   <div class="main">
-    <div class="order-form">
+    <v-sheet class="order-form">
       <div class="order-message">I wanna drink...</div>
       <div class="order-input">
         <div class="inputs">
@@ -18,8 +18,8 @@
           <textarea placeholder="冰量甜度"  v-model="input.note" class="input-note"></textarea>
         </div>
       </div>
-      <button @click="addDrink" class="button">add</button>
-    </div>
+      <v-btn :color="colors.primary" @click="addDrink" class="button">add</v-btn>
+    </v-sheet>
     <div class="orders">
       <div class="section-title">Orders</div>
       <div v-for="(item, index) of orderlist" :key="index" class="items">
@@ -28,8 +28,8 @@
           <div class="price">＄{{ item.price }}</div>
           <div class="amount">{{ item.qty }} 杯</div>
           <div class="buttons">
-            <button @click="toggle(index)" class="button">edit</button>
-            <button @click="deleteDrink(index)" class="button">delete</button>
+            <v-btn :color="colors.primary" @click="toggle(index)" class="button">edit</v-btn>
+            <v-btn :color="colors.primary" @click="deleteDrink(index)" class="button">delete</v-btn>
           </div>
         </div>
         <div class="note">{{ item.note }}</div>
@@ -77,7 +77,10 @@ export default {
       },
       empty: false,
       showEdit: false,
-      number: null
+      number: null,
+      colors: {
+        primary: 'rgb(232, 222, 181)'
+      }
     }
   },
   computed: {
