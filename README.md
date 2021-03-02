@@ -13,4 +13,7 @@ If you change your mind, hit the `edit` button, you can amend your order on the 
 
 If you don't want the order anymore, hit the `delete` button to delete the order.
 
-On the bottom of the list, you can see the total quantity and price for all the orders.
+On the bottom of the list, you can see the total quantity and price for all the orders.  
+
+### to be optimized
+• click to edit order
