@@ -4,20 +4,14 @@
   <div class="main">
     <v-sheet class="order-form">
       <div class="order-message">I wanna drink...</div>
-      <div class="order-input">
-        <div class="inputs">
-          <input type="text" placeholder="🥤"  v-model="input.drink" class="input-text">
-        </div>
-        <div class="inputs">
-          <input type="number" placeholder="$$" v-model="input.price" class="input-number">
-        </div>
-        <div class="inputs">
-          <input type="number" placeholder="數量" v-model="input.qty" class="input-number">
-        </div>
-        <div class="inputs">
-          <textarea placeholder="冰量甜度"  v-model="input.note" class="input-note"></textarea>
-        </div>
-      </div>
+      <v-form>
+          <v-text-field type="text" label="🥤"  v-model="input.drink" :color="colors.inputs" hide-details outlined dense></v-text-field>
+          <v-col class="d-flex justify-space-between px-0">
+          <v-text-field type="number" label="$$" v-model="input.price" class="mr-1" :color="colors.inputs" hide-details outlined dense></v-text-field>
+          <v-text-field type="number" label="數量" v-model="input.qty" :color="colors.inputs" hide-details outlined dense></v-text-field>
+          </v-col>
+          <v-textarea label="冰量甜度"  v-model="input.note" :color="colors.inputs" outlined dense></v-textarea>
+      </v-form>
       <v-btn :color="colors.primary" @click="addDrink" class="button">add</v-btn>
     </v-sheet>
     <div class="orders">
@@ -79,7 +73,8 @@ export default {
       showEdit: false,
       number: null,
       colors: {
-        primary: 'rgb(232, 222, 181)'
+        primary: 'rgb(232, 222, 181)',
+        inputs: 'rgb(235, 229, 204)'
       }
     }
   },
