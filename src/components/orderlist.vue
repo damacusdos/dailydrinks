@@ -16,7 +16,7 @@
     </v-sheet>
     <div class="orders">
       <div class="section-title">Orders</div>
-      <div v-for="(item, index) of orderlist" :key="index" class="items">
+      <v-card v-for="(item, index) of orderlist" :key="index" :color="colors.card" flat class="items">
         <div class="detail">
           <div class="name">{{ item.drink }}</div>
           <div class="price">＄{{ item.price }}</div>
@@ -26,9 +26,10 @@
             <v-btn :color="colors.primary" @click="deleteDrink(index)" class="button">delete</v-btn>
           </div>
         </div>
+        <v-divider class="my-3"></v-divider>
         <div class="note">{{ item.note }}</div>
-      </div>
-      <div v-if="showEdit" class="items edit-box">
+      </v-card>
+      <v-card v-if="showEdit" class="items edit-box">
         <div class="detail">
           <input type="text" v-model="edit.drink" class="edit-name">
           <input type="text" v-model="edit.price" class="edit-price">
@@ -36,10 +37,10 @@
         </div>
         <textarea v-model="edit.note" class="edit-note"></textarea>
         <button @click="editDrink" class="button edit-button">confirm</button>
-      </div>
-      <div class="items total-box">
+      </v-card>
+      <v-card :color="colors.card" flat class="items total-box">
         <div>💵 Total $ {{ totalPrice }} , {{ totalDrinks }} drinks</div>
-      </div>
+      </v-card>
     </div>
   </div>
 </div>
@@ -74,7 +75,8 @@ export default {
       number: null,
       colors: {
         primary: 'rgb(232, 222, 181)',
-        inputs: 'rgb(235, 229, 204)'
+        inputs: 'rgb(235, 229, 204)',
+        card: 'rgba(235, 229, 204, .5)'
       }
     }
   },
@@ -204,7 +206,7 @@ export default {
 .note {
   display: flex;
   justify-content: flex-start;
-  border-top: 1px solid rgb(235, 229, 204);
+  /* border-top: 1px solid rgb(235, 229, 204); */
   padding-top: .5rem;
 }
 .edit-name {
