@@ -22,8 +22,8 @@
           <div class="price">＄{{ item.price }}</div>
           <div class="amount">{{ item.qty }} 杯</div>
           <div class="buttons">
-            <v-btn :color="colors.primary" @click="toggle(index)" class="button">edit</v-btn>
-            <v-btn :color="colors.primary" @click="deleteDrink(index)" class="button">delete</v-btn>
+            <v-icon @click="toggle(index)" class="mr-3">mdi-pencil</v-icon>
+            <v-icon @click="deleteDrink(index)">mdi-close</v-icon>
           </div>
         </div>
         <v-divider class="my-3"></v-divider>
