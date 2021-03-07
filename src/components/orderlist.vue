@@ -18,18 +18,22 @@
       <div class="section-title">Orders</div>
       <v-card v-for="(item, index) of orderlist" :key="index" :color="colors.card" flat class="items">
         <div class="detail">
-          <div class="name">{{ item.drink }}</div>
-          <div class="price">＄{{ item.price }}</div>
-          <div class="amount">{{ item.qty }} 杯</div>
+          <div v-if="!item.edit" class="name">{{ item.drink }}</div>
+          <v-text-field v-if="item.edit" type="text" v-model="item.drink"></v-text-field>
+          <div v-if="!item.edit" class="price">＄{{ item.price }}</div>
+          <v-text-field v-if="item.edit" type="number" v-model="item.price"></v-text-field>
+          <div v-if="!item.edit" class="amount">{{ item.qty }} 杯</div>
+          <v-text-field v-if="item.edit" type="number" v-model="item.qty"></v-text-field>
           <div class="buttons">
-            <v-icon @click="toggle(index)" class="mr-3">mdi-pencil</v-icon>
+            <v-icon @click="toggleEdit(index)" class="mr-3">mdi-pencil</v-icon>
             <v-icon @click="deleteDrink(index)">mdi-close</v-icon>
           </div>
         </div>
         <v-divider class="my-3"></v-divider>
-        <div class="note">{{ item.note }}</div>
+        <div v-if="!item.edit" class="note">{{ item.note }}</div>
+        <v-textarea v-else v-model="item.note"></v-textarea>
       </v-card>
-      <v-card v-if="showEdit" class="items edit-box">
+      <!-- <v-card v-if="showEdit" class="items edit-box">
         <div class="detail">
           <input type="text" v-model="edit.drink" class="edit-name">
           <input type="text" v-model="edit.price" class="edit-price">
@@ -37,7 +41,7 @@
         </div>
         <textarea v-model="edit.note" class="edit-note"></textarea>
         <button @click="editDrink" class="button edit-button">confirm</button>
-      </v-card>
+      </v-card> -->
       <v-card :color="colors.card" flat class="items total-box">
         <div>💵 Total $ {{ totalPrice }} , {{ totalDrinks }} drinks</div>
       </v-card>
@@ -55,14 +59,16 @@ export default {
           drink: '四季春一號',
           price: 40,
           note: '中杯 半糖去冰',
-          qty: 1
+          qty: 1,
+          edit: false
         }
       ],
       input: {
         drink: '',
         price: null,
         note: '',
-        qty: null
+        qty: null,
+        edit: false
       },
       edit: {
         drink: '',
@@ -108,7 +114,7 @@ export default {
     },
     toggleEdit(index) {
       console.log(this.orderlist[index])
-      this.orderlist[index].edit = true
+      this.orderlist[index].edit = !this.orderlist[index].edit
     },
     toggle(index) {
       this.showEdit = !this.showEdit
