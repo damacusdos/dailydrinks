@@ -18,20 +18,25 @@
       <div class="section-title">Orders</div>
       <v-card v-for="(item, index) of orderlist" :key="index" :color="colors.card" flat class="items">
         <div class="detail">
-          <div v-if="!item.edit" class="name">{{ item.drink }}</div>
-          <v-text-field v-if="item.edit" type="text" v-model="item.drink"></v-text-field>
-          <div v-if="!item.edit" class="price">＄{{ item.price }}</div>
-          <v-text-field v-if="item.edit" type="number" v-model="item.price"></v-text-field>
-          <div v-if="!item.edit" class="amount">{{ item.qty }} 杯</div>
-          <v-text-field v-if="item.edit" type="number" v-model="item.qty"></v-text-field>
+          <div class="detail-item">
+            <div v-if="!item.edit" class="mr-3">{{ item.drink }}</div>
+            <v-text-field v-if="item.edit" type="text" v-model="item.drink" hide-details :background-color="colors.inputs" outlined dense class="name mt-0 mr-3 pa-0" full-width></v-text-field>
+            <div>$</div>
+            <div v-if="!item.edit" class="mr-3">{{ item.price }}</div>
+            <v-text-field v-if="item.edit" type="number" v-model="item.price" hide-details :background-color="colors.inputs" outlined dense class="price pa-0 mr-3"></v-text-field>
+            <div v-if="!item.edit">{{ item.qty }}</div>
+            <v-text-field v-if="item.edit" type="number" v-model="item.qty" hide-details :background-color="colors.inputs" outlined dense class="amount pa-0 mr-1"></v-text-field>
+            <div>杯</div>
+          </div>
           <div class="buttons">
-            <v-icon @click="toggleEdit(index)" class="mr-3">mdi-pencil</v-icon>
+            <v-icon v-if="!item.edit" @click="toggleEdit(index)" class="mr-3">mdi-pencil</v-icon>
+            <v-icon v-else @click="saveEdit(index)" class="mr-3">mdi-check</v-icon>
             <v-icon @click="deleteDrink(index)">mdi-close</v-icon>
           </div>
         </div>
         <v-divider class="my-3"></v-divider>
         <div v-if="!item.edit" class="note">{{ item.note }}</div>
-        <v-textarea v-else v-model="item.note"></v-textarea>
+        <v-textarea v-else v-model="item.note" :background-color="colors.inputs" height="80" outlined dense filled></v-textarea>
       </v-card>
       <!-- <v-card v-if="showEdit" class="items edit-box">
         <div class="detail">
@@ -107,14 +112,23 @@ export default {
     addDrink() {
       this.orderlist.push(this.input)
       console.log(this.orderlist)
-      this.input = {}
+      this.input = {
+        drink: '',
+        price: null,
+        note: '',
+        qty: null,
+        edit: false
+      }
     },
     deleteDrink(index) {
       this.orderlist.splice(index, 1)
     },
     toggleEdit(index) {
       console.log(this.orderlist[index])
-      this.orderlist[index].edit = !this.orderlist[index].edit
+      this.orderlist[index].edit = true
+    },
+    saveEdit(index) {
+      this.orderlist[index].edit = false
     },
     toggle(index) {
       this.showEdit = !this.showEdit
@@ -196,14 +210,23 @@ export default {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
+  align-items: center;
   margin-bottom: .8rem;
   position: relative;
 }
+.detail-item {
+  display: flex;
+  align-items: center;
+  width: 82%;
+}
 .name {
-  margin-right: .8rem;
+  width: 45%;
 }
 .price {
-  margin-right: .8rem;
+  width: 15%;
+}
+.amount {
+  width: 15%;
 }
 .buttons {
   position: absolute;
