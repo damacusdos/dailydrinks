@@ -38,15 +38,6 @@
         <div v-if="!item.edit" class="note">{{ item.note }}</div>
         <v-textarea v-else v-model="item.note" :background-color="colors.inputs" height="80" outlined dense filled></v-textarea>
       </v-card>
-      <!-- <v-card v-if="showEdit" class="items edit-box">
-        <div class="detail">
-          <input type="text" v-model="edit.drink" class="edit-name">
-          <input type="text" v-model="edit.price" class="edit-price">
-          <input type="text" v-model="edit.qty" class="edit-qty">
-        </div>
-        <textarea v-model="edit.note" class="edit-note"></textarea>
-        <button @click="editDrink" class="button edit-button">confirm</button>
-      </v-card> -->
       <v-card :color="colors.card" flat class="items total-box">
         <div>💵 Total $ {{ totalPrice }} , {{ totalDrinks }} drinks</div>
       </v-card>
@@ -75,15 +66,6 @@ export default {
         qty: null,
         edit: false
       },
-      edit: {
-        drink: '',
-        price: null,
-        note: '',
-        qty: null
-      },
-      empty: false,
-      showEdit: false,
-      number: null,
       colors: {
         primary: 'rgb(232, 222, 181)',
         inputs: 'rgb(235, 229, 204)',
@@ -129,15 +111,6 @@ export default {
     },
     saveEdit(index) {
       this.orderlist[index].edit = false
-    },
-    toggle(index) {
-      this.showEdit = !this.showEdit
-      this.number = index
-    },
-    editDrink() {     
-      this.orderlist.splice(this.number, 1, this.edit)
-      this.showEdit = !this.showEdit
-      this.edit = {}
     }
   }
 }
