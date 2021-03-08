@@ -9,7 +9,7 @@ After filled, press `add` button to submit your order.
 #### Order list
 On the right section, you can see the total orders you submit. 
 
-If you change your mind, click the pencil icon to amend your order.
+If you change your mind, click the pencil icon to amend your order detail, and then click check icon to save the change.
 
 If you don't want the order anymore, click the cross icon to delete the order.
 
