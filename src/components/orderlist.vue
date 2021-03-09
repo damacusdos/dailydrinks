@@ -4,11 +4,11 @@
   <div class="main">
     <v-sheet class="order-form">
       <div class="order-message">I wanna drink...</div>
-      <v-form>
-          <v-text-field type="text" label="🥤"  v-model="input.drink" :color="colors.inputs" hide-details outlined dense></v-text-field>
+      <v-form ref="form" v-model="valid" lazy-validation>
+          <v-text-field type="text" label="🥤"  v-model="input.drink" :color="colors.inputs" :rules="drinkRule" hide-details outlined dense></v-text-field>
           <v-col class="d-flex justify-space-between px-0">
-          <v-text-field type="number" label="$$" v-model="input.price" class="mr-1" :color="colors.inputs" hide-details outlined dense></v-text-field>
-          <v-text-field type="number" label="數量" v-model="input.qty" :color="colors.inputs" hide-details outlined dense></v-text-field>
+          <v-text-field type="number" label="$$" v-model="input.price" class="mr-1" :color="colors.inputs" :rules="priceRule" hide-details outlined dense></v-text-field>
+          <v-text-field type="number" label="數量" v-model="input.qty" :color="colors.inputs" :rules="qtyRule" hide-details outlined dense></v-text-field>
           </v-col>
           <v-textarea label="冰量甜度"  v-model="input.note" :color="colors.inputs" outlined dense></v-textarea>
       </v-form>
@@ -70,7 +70,11 @@ export default {
         primary: 'rgb(232, 222, 181)',
         inputs: 'rgb(235, 229, 204)',
         card: 'rgba(235, 229, 204, .5)'
-      }
+      },
+      valid: true,
+      drinkRule: [ v => !!v || 'drink name must not be empty'],
+      priceRule: [ v => !!v || 'price must not be empty' ],
+      qtyRule: [ v => !!v || 'drink amount must not be empty' ]
     }
   },
   computed: {
@@ -92,6 +96,9 @@ export default {
   },
   methods: {
     addDrink() {
+      if(!this.$refs.form.validate()) {
+        return
+      }
       this.orderlist.push(this.input)
       console.log(this.orderlist)
       this.input = {
@@ -101,6 +108,7 @@ export default {
         qty: null,
         edit: false
       }
+      this.$refs.form.resetValidation()
     },
     deleteDrink(index) {
       this.orderlist.splice(index, 1)
