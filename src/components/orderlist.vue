@@ -1,49 +1,137 @@
 <template>
-<div>
-  <div class="title">Order A Drink</div>
-  <div class="main">
-    <v-sheet class="order-form">
-      <div class="order-message">I wanna drink...</div>
-      <v-form ref="form" v-model="valid" lazy-validation>
-          <v-text-field type="text" label="🥤"  v-model="input.drink" :color="colors.inputs" :rules="drinkRule" hide-details outlined dense></v-text-field>
+  <div>
+    <div class="title">Order A Drink</div>
+    <div class="main">
+      <v-sheet class="order-form">
+        <div class="order-message">I wanna drink...</div>
+        <v-form ref="form" v-model="valid" lazy-validation>
+          <v-text-field
+            type="text"
+            label="🥤"
+            v-model="input.drink"
+            :color="colors.inputs"
+            :rules="drinkRule"
+            hide-details
+            outlined
+            dense
+          ></v-text-field>
           <v-col class="d-flex justify-space-between px-0">
-          <v-text-field type="number" label="$$" v-model="input.price" class="mr-1" :color="colors.inputs" :rules="priceRule" hide-details outlined dense></v-text-field>
-          <v-text-field type="number" label="數量" v-model="input.qty" :color="colors.inputs" :rules="qtyRule" hide-details outlined dense></v-text-field>
+            <v-text-field
+              type="number"
+              label="$$"
+              v-model="input.price"
+              class="mr-1"
+              :color="colors.inputs"
+              :rules="priceRule"
+              hide-details
+              outlined
+              dense
+            ></v-text-field>
+            <v-text-field
+              type="number"
+              label="數量"
+              v-model="input.qty"
+              :color="colors.inputs"
+              :rules="qtyRule"
+              hide-details
+              outlined
+              dense
+            ></v-text-field>
           </v-col>
-          <v-textarea label="冰量甜度"  v-model="input.note" :color="colors.inputs" outlined dense></v-textarea>
-      </v-form>
-      <v-btn :color="colors.primary" @click="addDrink" class="button">add</v-btn>
-    </v-sheet>
-    <div class="orders">
-      <div class="section-title">Orders</div>
-      <v-card v-for="(item, index) of orderlist" :key="index" :color="colors.card" flat class="items">
-        <div class="detail">
-          <div class="detail-item">
-            <div v-if="!item.edit" class="mr-3">{{ item.drink }}</div>
-            <v-text-field v-if="item.edit" type="text" v-model="item.drink" hide-details :background-color="colors.inputs" outlined dense class="name mt-0 mr-3 pa-0" full-width></v-text-field>
-            <div>$</div>
-            <div v-if="!item.edit" class="mr-3">{{ item.price }}</div>
-            <v-text-field v-if="item.edit" type="number" v-model="item.price" hide-details :background-color="colors.inputs" outlined dense class="price pa-0 mr-3"></v-text-field>
-            <div v-if="!item.edit">{{ item.qty }}</div>
-            <v-text-field v-if="item.edit" type="number" v-model="item.qty" hide-details :background-color="colors.inputs" outlined dense class="amount pa-0 mr-1"></v-text-field>
-            <div>杯</div>
+          <v-textarea
+            label="冰量甜度"
+            v-model="input.note"
+            :color="colors.inputs"
+            outlined
+            dense
+          ></v-textarea>
+        </v-form>
+        <v-btn :color="colors.primary" @click="addDrink" class="button"
+          >add</v-btn
+        >
+      </v-sheet>
+      <div class="orders">
+        <div class="section-title">Orders</div>
+        <v-card
+          v-for="(item, index) of orderlist"
+          :key="index"
+          :color="colors.card"
+          flat
+          class="items"
+        >
+          <div class="detail">
+            <v-form
+              ref="editForm"
+              v-model="valid"
+              lazy-validation
+              class="detail-item"
+            >
+              <div v-if="!item.edit" class="mr-3">{{ item.drink }}</div>
+              <v-text-field
+                v-if="item.edit"
+                type="text"
+                v-model="item.drink"
+                :rules="drinkRule"
+                hide-details
+                :background-color="colors.inputs"
+                outlined
+                dense
+                class="name mt-0 mr-3 pa-0"
+                full-width
+              ></v-text-field>
+              <div>$</div>
+              <div v-if="!item.edit" class="mr-3">{{ item.price }}</div>
+              <v-text-field
+                v-if="item.edit"
+                type="number"
+                v-model="item.price"
+                hide-details
+                :background-color="colors.inputs"
+                outlined
+                dense
+                class="price pa-0 mr-3"
+              ></v-text-field>
+              <div v-if="!item.edit">{{ item.qty }}</div>
+              <v-text-field
+                v-if="item.edit"
+                type="number"
+                v-model="item.qty"
+                hide-details
+                :background-color="colors.inputs"
+                outlined
+                dense
+                class="amount pa-0 mr-1"
+              ></v-text-field>
+              <div>杯</div>
+            </v-form>
+            <div class="buttons">
+              <v-icon v-if="!item.edit" @click="toggleEdit(index)" class="mr-3"
+                >mdi-pencil</v-icon
+              >
+              <v-icon v-else @click="saveEdit(index)" class="mr-3"
+                >mdi-check</v-icon
+              >
+              <v-icon @click="deleteDrink(index)">mdi-close</v-icon>
+            </div>
           </div>
-          <div class="buttons">
-            <v-icon v-if="!item.edit" @click="toggleEdit(index)" class="mr-3">mdi-pencil</v-icon>
-            <v-icon v-else @click="saveEdit(index)" class="mr-3">mdi-check</v-icon>
-            <v-icon @click="deleteDrink(index)">mdi-close</v-icon>
-          </div>
-        </div>
-        <v-divider class="my-3"></v-divider>
-        <div v-if="!item.edit" class="note">{{ item.note }}</div>
-        <v-textarea v-else v-model="item.note" :background-color="colors.inputs" height="80" outlined dense filled></v-textarea>
-      </v-card>
-      <v-card :color="colors.card" flat class="items total-box">
-        <div>💵 Total $ {{ totalPrice }} , {{ totalDrinks }} drinks</div>
-      </v-card>
+          <v-divider class="my-3"></v-divider>
+          <div v-if="!item.edit" class="note">{{ item.note }}</div>
+          <v-textarea
+            v-else
+            v-model="item.note"
+            :background-color="colors.inputs"
+            height="80"
+            outlined
+            dense
+            filled
+          ></v-textarea>
+        </v-card>
+        <v-card :color="colors.card" flat class="items total-box">
+          <div>💵 Total $ {{ totalPrice }} , {{ totalDrinks }} drinks</div>
+        </v-card>
+      </div>
     </div>
   </div>
-</div>
 </template>
 
 <script>
@@ -72,23 +160,24 @@ export default {
         card: 'rgba(235, 229, 204, .5)'
       },
       valid: true,
-      drinkRule: [ v => !!v || 'drink name must not be empty'],
-      priceRule: [ v => !!v || 'price must not be empty' ],
-      qtyRule: [ v => !!v || 'drink amount must not be empty' ]
+      drinkRule: [v => !!v || 'drink name must not be empty'],
+      priceRule: [v => !!v || 'price must not be empty'],
+      qtyRule: [v => !!v || 'drink amount must not be empty']
     }
   },
   computed: {
     totalDrinks() {
       let total = 0
-      for(let i = 0; i < this.orderlist.length; i++) {
+      for (let i = 0; i < this.orderlist.length; i++) {
         total += parseInt(this.orderlist[i].qty)
       }
       return total
     },
     totalPrice() {
       let sum = 0
-      for(let i = 0; i < this.orderlist.length; i++) {
-        let subsum = parseInt(this.orderlist[i].price)*parseInt(this.orderlist[i].qty)
+      for (let i = 0; i < this.orderlist.length; i++) {
+        let subsum =
+          parseInt(this.orderlist[i].price) * parseInt(this.orderlist[i].qty)
         sum += subsum
       }
       return sum
@@ -96,7 +185,7 @@ export default {
   },
   methods: {
     addDrink() {
-      if(!this.$refs.form.validate()) {
+      if (!this.$refs.form.validate()) {
         return
       }
       this.orderlist.push(this.input)
@@ -139,15 +228,15 @@ export default {
   padding: 2rem 1rem;
 }
 .order-message {
-  margin-bottom: .8rem;
+  margin-bottom: 0.8rem;
 }
 .order-input {
   display: flex;
   flex-direction: column;
-  margin: .5rem 0;
+  margin: 0.5rem 0;
 }
 .inputs {
-  margin-bottom: .5rem;
+  margin-bottom: 0.5rem;
 }
 .input-text {
   width: 80%;
@@ -168,7 +257,6 @@ export default {
   max-height: 6rem;
   border: 1px solid rgb(235, 229, 204);
   background-color: transparent;
-
 }
 .orders {
   width: 500px;
@@ -181,18 +269,18 @@ export default {
 .items {
   display: flex;
   flex-direction: column;
-  background-color:rgba(235, 229, 204, .5);
-  padding: 1rem .8rem;
-  margin: .8rem 0;
+  background-color: rgba(235, 229, 204, 0.5);
+  padding: 1rem 0.8rem;
+  margin: 0.8rem 0;
   border-radius: 2px;
-  box-shadow: 0 0 5px rgba(155, 155, 155, .3)
+  box-shadow: 0 0 5px rgba(155, 155, 155, 0.3);
 }
 .detail {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
-  margin-bottom: .8rem;
+  margin-bottom: 0.8rem;
   position: relative;
 }
 .detail-item {
@@ -217,28 +305,28 @@ export default {
   display: flex;
   justify-content: flex-start;
   /* border-top: 1px solid rgb(235, 229, 204); */
-  padding-top: .5rem;
+  padding-top: 0.5rem;
 }
 .edit-name {
   border: 1px solid rgb(235, 229, 204);
-  background-color: rgba(255, 255, 255, .3);
+  background-color: rgba(255, 255, 255, 0.3);
   height: 1.5rem;
-  margin-right: .8rem;
+  margin-right: 0.8rem;
 }
 .edit-price {
   border: 1px solid rgb(235, 229, 204);
-  background-color: rgba(255, 255, 255, .3);
+  background-color: rgba(255, 255, 255, 0.3);
   height: 1.5rem;
-  margin-right: .8rem;
+  margin-right: 0.8rem;
 }
 .edit-qty {
   border: 1px solid rgb(235, 229, 204);
-  background-color: rgba(255, 255, 255, .3);
+  background-color: rgba(255, 255, 255, 0.3);
   height: 1.5rem;
 }
 .edit-note {
   border: 1px solid rgb(235, 229, 204);
-  background-color: rgba(255, 255, 255, .3);
+  background-color: rgba(255, 255, 255, 0.3);
   height: 1.5rem;
   max-width: 100%;
   height: 5rem;
@@ -252,10 +340,10 @@ export default {
   background-color: rgb(232, 222, 181);
   border-radius: 2px;
   height: 1.5rem;
-  margin-right: .5rem;
+  margin-right: 0.5rem;
   color: rgb(99, 90, 52);
 }
 .items.total-box {
-  box-shadow: 0 0 5px rgba(110, 106, 83, .3);
+  box-shadow: 0 0 5px rgba(110, 106, 83, 0.3);
 }
 </style>
