@@ -135,6 +135,8 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
   data() {
     return {
@@ -168,20 +170,26 @@ export default {
   computed: {
     totalDrinks() {
       let total = 0
+      /* eslint-disable no-plusplus */
       for (let i = 0; i < this.orderlist.length; i++) {
-        total += parseInt(this.orderlist[i].qty)
+        total += parseInt(this.orderlist[i].qty, 10)
       }
       return total
     },
     totalPrice() {
       let sum = 0
+      /* eslint-disable no-plusplus */
       for (let i = 0; i < this.orderlist.length; i++) {
-        let subsum =
-          parseInt(this.orderlist[i].price) * parseInt(this.orderlist[i].qty)
+        const subsum =
+          parseInt(this.orderlist[i].price, 10) *
+          parseInt(this.orderlist[i].qty, 10)
         sum += subsum
       }
       return sum
     }
+  },
+  mounted() {
+    this.testApi()
   },
   methods: {
     addDrink() {
@@ -208,11 +216,17 @@ export default {
     },
     saveEdit(index) {
       this.orderlist[index].edit = false
+    },
+    testApi() {
+      axios
+        .get(
+          'https://script.google.com/macros/s/AKfycbwLfTx3JRnrnGKF2-kwPco5E_P_D1RvdjJQeszB23HXXdJVoqZIuBnVmNIi2hiTts7t/exec'
+        )
+        .then(res => console.log(res.data))
     }
   }
 }
 </script>
-
 <style scoped>
 .title {
   font-size: 3rem;
